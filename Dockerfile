@@ -17,9 +17,11 @@ RUN mkdir -p /home/coder/.npm-global && \
     echo '#!/bin/bash' > /home/coder/.npm-global/bin/claude && \
     echo 'node /home/coder/.npm-global/lib/node_modules/@anthropic-ai/claude-code/cli.js "$@"' >> /home/coder/.npm-global/bin/claude && \
     chmod +x /home/coder/.npm-global/bin/claude && \
-    # Optionally symlink to /usr/local/bin for root user convenience (ignore failure)
-    ln -s /home/coder/.npm-global/bin/claude /usr/local/bin/claude || true && \
+    # Add PATH to multiple shell config files for better compatibility
     echo 'export PATH="/home/coder/.npm-global/bin:$PATH"' >> ~/.bashrc && \
-    echo 'export PATH="/home/coder/.npm-global/bin:$PATH"' >> ~/.profile
+    echo 'export PATH="/home/coder/.npm-global/bin:$PATH"' >> ~/.profile && \
+    echo 'export PATH="/home/coder/.npm-global/bin:$PATH"' >> ~/.zshrc && \
+    # Create a system-wide environment file
+    echo 'PATH="/home/coder/.npm-global/bin:$PATH"' >> ~/.pam_environment
 
 WORKDIR /home/coder/project
