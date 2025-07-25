@@ -40,6 +40,20 @@ Since this is an infrastructure project focused on containerized development env
 3. **Viewing logs**: `docker-compose logs -f`
 4. **Stopping the service**: `docker-compose down`
 
+## Claude Code CLI Usage
+
+The Claude Code CLI is available in the container. If `claude` command is not found in code-server terminals, use the full path:
+
+```bash
+/usr/local/bin/claude
+```
+
+Or create an alias by adding this to your shell profile:
+```bash
+echo 'alias claude="/usr/local/bin/claude"' >> ~/.bashrc
+source ~/.bashrc
+```
+
 ## Authentication
 
 The code-server instance requires password authentication via the `PASSWORD` environment variable. Claude Code CLI authentication is handled separately within the container via the `claude` command.

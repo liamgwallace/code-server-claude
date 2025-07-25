@@ -1,21 +1,21 @@
 FROM codercom/code-server:latest
 
+# Set up npm global path for coder user
+ENV NPM_CONFIG_PREFIX=/home/coder/.npm-global
+
 # Use bash for the shell
 SHELL ["/bin/bash", "-c"]
 
-# Install Claude CLI as root
-RUN npm install -g @anthropic-ai/claude-code
+USER coder
 
-# Create entrypoint script to ensure claude symlink exists
-RUN echo '#!/bin/bash' > /usr/local/bin/setup-claude.sh && \
-    echo 'ln -sf /usr/local/lib/node_modules/@anthropic-ai/claude-code/cli.js /usr/local/bin/claude 2>/dev/null || true' >> /usr/local/bin/setup-claude.sh && \
-    echo 'chmod +x /usr/local/bin/claude 2>/dev/null || true' >> /usr/local/bin/setup-claude.sh && \
-    echo 'exec "$@"' >> /usr/local/bin/setup-claude.sh && \
-    chmod +x /usr/local/bin/setup-claude.sh
+# Create npm global install dir and install Claude CLI
+RUN mkdir -p /home/coder/.npm-global && \
+    npm install -g @anthropic-ai/claude-code
+
+# Switch to root to create system symlink, then back to coder
+USER root
+RUN ln -sf /home/coder/.npm-global/bin/claude /usr/local/bin/claude
 
 USER coder
 
 WORKDIR /home/coder/project
-
-ENTRYPOINT ["/usr/local/bin/setup-claude.sh"]
-CMD ["dumb-init", "fixuid", "-q", "/usr/bin/code-server", "--bind-addr", "0.0.0.0:8080", "."]
