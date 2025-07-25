@@ -1,0 +1,32 @@
+version: "3.8"
+
+services:
+  code-server:
+    build: .
+    container_name: code-server
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Etc/UTC
+      - PASSWORD=n9Urwtze!co  # Set your code-server password here
+    volumes:
+      - /home/liam/docker/code-server/workspace:/home/coder/project
+      - /home/liam/docker/code-server/config:/home/coder/.config
+      - /home/liam/docker/code-server/claude:/home/coder/.claude-code
+    ports:
+      - "8443:8080"
+    labels:
+      - traefik.enable=true
+      - traefik.http.routers.code-server.rule=Host(`code.bramleyvale.com`)
+      - traefik.http.routers.code-server.entrypoints=web
+      # - traefik.http.routers.code-server.entrypoints=websecure
+      # - traefik.http.routers.code-server.tls=true
+      # - traefik.http.routers.code-server.tls.certresolver=letsencrypt
+      - traefik.http.services.code-server.loadbalancer.server.port=8080
+    restart: unless-stopped
+    networks:
+      - web
+
+networks:
+  web:
+    external: true
