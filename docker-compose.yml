@@ -1,5 +1,3 @@
-version: "3.8"
-
 services:
   code-server:
     build: .
@@ -8,7 +6,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - PASSWORD=n9Urwtze!co  # Set your code-server password here
+      - PASSWORD=changeme
     volumes:
       - /home/liam/docker/code-server/workspace:/home/coder/project
       - /home/liam/docker/code-server/config:/home/coder/.config
