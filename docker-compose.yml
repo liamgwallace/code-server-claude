@@ -7,6 +7,7 @@ services:
       - PGID=1000
       - TZ=Etc/UTC
       - PASSWORD=${PASSWORD}
+      - PATH=/home/coder/.npm-global/bin:/usr/local/bin:/usr/bin:/bin
     volumes:
       - /home/liam/docker/code-server/workspace:/home/coder/project
       - /home/liam/docker/code-server/config:/home/coder/.config
