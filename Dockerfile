@@ -9,18 +9,16 @@ SHELL ["/bin/bash", "-c"]
 
 USER coder
 
-# Create npm global install dir and install Claude CLI, then create system symlink
+# Create npm global install dir and install Claude CLI
 RUN mkdir -p /home/coder/.npm-global && \
-    echo "=== Installing Claude CLI ===" && \
-    npm install -g @anthropic-ai/claude-code && \
-    echo "=== Checking if CLI was installed ===" && \
-    ls -la /home/coder/.npm-global/lib/node_modules/@anthropic-ai/claude-code/cli.js && \
-    echo "=== Creating symlink ===" && \
-    sudo ln -sf /home/coder/.npm-global/lib/node_modules/@anthropic-ai/claude-code/cli.js /usr/local/bin/claude && \
-    sudo chmod +x /usr/local/bin/claude && \
-    echo "=== Verifying symlink ===" && \
-    ls -la /usr/local/bin/claude && \
-    echo "=== Testing claude command ===" && \
-    /usr/local/bin/claude --version
+    npm install -g @anthropic-ai/claude-code
+
+# Switch to root to create system symlink
+USER root
+RUN ln -sf /home/coder/.npm-global/lib/node_modules/@anthropic-ai/claude-code/cli.js /usr/local/bin/claude && \
+    chmod +x /usr/local/bin/claude
+
+# Switch back to coder user
+USER coder
 
 WORKDIR /home/coder/project
