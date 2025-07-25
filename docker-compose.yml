@@ -6,7 +6,7 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=Etc/UTC
-      - PASSWORD=changeme
+      - PASSWORD=${PASSWORD}
     volumes:
       - /home/liam/docker/code-server/workspace:/home/coder/project
       - /home/liam/docker/code-server/config:/home/coder/.config
