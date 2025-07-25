@@ -12,6 +12,7 @@ services:
       - /home/liam/docker/code-server/workspace:/home/coder/project
       - /home/liam/docker/code-server/config:/home/coder/.config
       - /home/liam/docker/code-server/claude:/home/coder/.claude-code
+      - /home/liam/docker/code-server/user-data:/home/coder/.local/share/code-server
     ports:
       - "8443:8080"
     labels:
