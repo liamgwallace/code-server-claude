@@ -1,5 +1,10 @@
 FROM codercom/code-server:latest
 
+# Install Node.js and npm as root
+USER root
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
+    apt-get install -y nodejs
+
 # Set up npm global path for coder user
 ENV NPM_CONFIG_PREFIX=/home/coder/.npm-global
 
